@@ -6,9 +6,9 @@ export type CommentType = {
 	createdAt: number;
 	score: number;
 	user: User;
-	replies: Replies[];
+	replies: ReplyType[];
 };
 
-export interface Replies extends CommentType {
+export interface ReplyType extends Omit<CommentType, 'replies'> {
 	replyingTo: string;
 }

@@ -14,6 +14,7 @@ export default {
 				'moderate-blue': '#5357B6',
 				'dark-blue': '#334253',
 				'grayish-blue': '#67727E',
+				'soft-red': '#ED6368',
 			},
 		},
 	},

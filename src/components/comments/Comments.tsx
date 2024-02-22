@@ -7,6 +7,7 @@ import data from '../../data.json';
 export default function Comments() {
 	const me = data.currentUser;
 	const [allComments, setAllComments] = useState<CommentType[]>([]);
+
 	useEffect(() => {
 		const savedComments = localStorage.getItem('comments');
 		if (savedComments) {
@@ -18,7 +19,7 @@ export default function Comments() {
 	}, []);
 
 	return (
-		<div className="w-[730px] h-[896px]">
+		<div className="w-[730px]">
 			<CommentsList comments={allComments} />
 			<AddComment currentUser={me} />
 		</div>
