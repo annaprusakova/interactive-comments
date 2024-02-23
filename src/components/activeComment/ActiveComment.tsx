@@ -4,15 +4,17 @@ import { User } from '../../dto/user';
 type ActiveCommentProps = {
 	currentUser: User;
 	buttonName: string;
+	text?: string;
 	onClickAction: (comment: string) => void;
 };
 
 export default function ActiveComment({
 	currentUser,
 	buttonName,
+	text,
 	onClickAction,
 }: ActiveCommentProps) {
-	const [comment, setComment] = useState<string>('');
+	const [comment, setComment] = useState<string>(text || '');
 
 	const handleClick = () => {
 		if (comment.length) {
@@ -22,9 +24,9 @@ export default function ActiveComment({
 	};
 	return (
 		<div
-			className={`w-full h-[144px] ${buttonName === 'REPLY' ? 'mb-5' : 'mb-0'} bg-white rounded-md`}
+			className={`w-full h-[144px] ${buttonName === 'REPLY' || buttonName === 'UPDATE' ? 'mb-5' : 'mb-0'} bg-white rounded-md`}
 		>
-			<div className="flex flex-row items-start justify-between p-4">
+			<div className="w-full flex flex-row items-start justify-between gap-4 p-4">
 				<img src={currentUser.image.png} className="w-10 h-10 rounded-full" />
 				<textarea
 					rows={4}

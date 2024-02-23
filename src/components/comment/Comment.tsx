@@ -5,18 +5,29 @@ import data from '../../data.json';
 import { v4 as uuidv4 } from 'uuid';
 import CreatedComment from '../createdComment/CreatedComment';
 import Reply from '../reply/Reply';
+import {
+	deleteComment,
+	updateCommentContent,
+	updateCommentsAfterAction,
+} from '../../helpers/comments.helper';
+import {
+	deleteReply,
+	updateReplyAfterAction,
+	updateReplyContent,
+} from '../../helpers/replies.helper';
+import ActiveComment from '../activeComment/ActiveComment';
 
 type CommentsProps = {
 	comment: CommentType;
-	updateComments: (comment: CommentType) => void;
 };
 
-export default function Comment({ comment, updateComments }: CommentsProps) {
+export default function Comment({ comment }: CommentsProps) {
 	const me = data.currentUser;
 	const { score, content, createdAt, user, replies } = comment;
 	const createdAtData =
 		String(createdAt).length === 10 ? createdAt * 1000 : createdAt;
 	const [isAddReply, setIsAddReply] = useState<boolean>(false);
+	const [isEdit, setIsEdit] = useState<boolean>(false);
 
 	const handleAddReplie = (reply: string) => {
 		const newReplies = [...comment.replies];
@@ -28,7 +39,7 @@ export default function Comment({ comment, updateComments }: CommentsProps) {
 			user: me,
 			replyingTo: comment.user.username,
 		});
-		updateComments({ ...comment, replies: newReplies });
+		updateCommentsAfterAction({ ...comment, replies: newReplies });
 		setIsAddReply(false);
 	};
 
@@ -37,42 +48,79 @@ export default function Comment({ comment, updateComments }: CommentsProps) {
 			...comment,
 			score: isIncrease ? comment.score++ : comment.score--,
 		};
-		updateComments(updatedComment);
+		updateCommentsAfterAction(updatedComment);
 	};
 
 	const handleClickReply = () => {
 		setIsAddReply(!isAddReply);
 	};
 
-	const updateReply = (updatedReply: ReplyType) => {
-		const newRepliesArray = [...comment.replies];
-		const index = newRepliesArray.findIndex(
-			(reply) => reply.id === updatedReply.id,
+	const handleUpdateReplyAfterAction = (updatedReply: ReplyType) => {
+		const newRepliesArray = updateReplyAfterAction(
+			comment.replies,
+			updatedReply,
 		);
-		if (index !== -1) {
-			newRepliesArray[index] = updatedReply;
-			updateComments({ ...comment, replies: newRepliesArray });
-		}
+		updateCommentsAfterAction({ ...comment, replies: newRepliesArray });
+	};
+
+	const handleDeleteMyComment = () => {
+		deleteComment(comment);
+	};
+
+	const handleDeleteMyReply = (deletedReply: ReplyType) => {
+		const newArrayOfReplies = deleteReply(comment.replies, deletedReply);
+		updateCommentsAfterAction({ ...comment, replies: newArrayOfReplies });
+	};
+
+	const handleUpdateComment = (newContent: string) => {
+		updateCommentContent(comment, newContent);
+		setIsEdit(false);
+	};
+
+	const handleUpdateMyReply = (reply: ReplyType, newContent: string) => {
+		const newArrayOfReplies = updateReplyContent(
+			comment.replies,
+			reply,
+			newContent,
+		);
+		updateCommentsAfterAction({ ...comment, replies: newArrayOfReplies });
 	};
 
 	return (
 		<>
-			<CreatedComment
-				isReply={false}
-				score={score}
-				username={user.username}
-				avatar={user.image.png}
-				content={content}
-				createdAtData={createdAtData}
-				onReply={handleClickReply}
-				onScore={handleScore}
-			/>
+			{isEdit ? (
+				<ActiveComment
+					currentUser={me}
+					buttonName={'UPDATE'}
+					onClickAction={handleUpdateComment}
+					text={comment.content}
+				/>
+			) : (
+				<CreatedComment
+					isReply={false}
+					score={score}
+					username={user.username}
+					avatar={user.image.png}
+					content={content}
+					createdAtData={createdAtData}
+					onReply={handleClickReply}
+					onScore={handleScore}
+					onDeleteMyComment={handleDeleteMyComment}
+					setIsEdit={setIsEdit}
+				/>
+			)}
 			{replies.length && (
 				<div className="flex flex-row justify-between">
 					<div className="w-[2px] ml-8 my-5 bg-light-gray" />
 					<div className="mt-2 flex flex-col items-end">
 						{replies.map((reply, index) => (
-							<Reply reply={reply} updateReply={updateReply} key={index} />
+							<Reply
+								reply={reply}
+								updateReplyAfterAction={handleUpdateReplyAfterAction}
+								onDeleteReply={handleDeleteMyReply}
+								onUpdateMyReply={handleUpdateMyReply}
+								key={index}
+							/>
 						))}
 					</div>
 				</div>
