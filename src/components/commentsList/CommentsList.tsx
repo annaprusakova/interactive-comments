@@ -1,10 +1,8 @@
-import { CommentType } from '../../dto/comment';
+import { useCommentsContext } from '../Comments.context';
 import Comment from '../comment/Comment';
 
-type CommentsListProps = {
-	comments: CommentType[];
-};
-export default function CommentsList({ comments }: CommentsListProps) {
+export default function CommentsList() {
+	const { comments } = useCommentsContext();
 	return (
 		<div className="mt-16">
 			{comments.map((comment, index) => (

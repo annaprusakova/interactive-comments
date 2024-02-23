@@ -1,28 +1,26 @@
 import { useState } from 'react';
 import { CommentType, ReplyType } from '../../dto/comment';
 import AddReply from '../addReply/AddReply';
-import data from '../../data.json';
 import { v4 as uuidv4 } from 'uuid';
 import CreatedComment from '../createdComment/CreatedComment';
 import Reply from '../reply/Reply';
-import {
-	deleteComment,
-	updateCommentContent,
-	updateCommentsAfterAction,
-} from '../../helpers/comments.helper';
-import {
-	deleteReply,
-	updateReplyAfterAction,
-	updateReplyContent,
-} from '../../helpers/replies.helper';
 import ActiveComment from '../activeComment/ActiveComment';
+import { useCommentsContext } from '../Comments.context';
 
 type CommentsProps = {
 	comment: CommentType;
 };
 
 export default function Comment({ comment }: CommentsProps) {
-	const me = data.currentUser;
+	const {
+		currentUser,
+		updateCommentsAfterAction,
+		updateReplyAfterAction,
+		deleteComment,
+		deleteReply,
+		updateCommentContent,
+		updateReplyContent,
+	} = useCommentsContext();
 	const { score, content, createdAt, user, replies } = comment;
 	const createdAtData =
 		String(createdAt).length === 10 ? createdAt * 1000 : createdAt;
@@ -36,7 +34,7 @@ export default function Comment({ comment }: CommentsProps) {
 			content: reply,
 			createdAt: new Date().getTime(),
 			score: 0,
-			user: me,
+			user: currentUser,
 			replyingTo: comment.user.username,
 		});
 		updateCommentsAfterAction({ ...comment, replies: newReplies });
@@ -46,7 +44,7 @@ export default function Comment({ comment }: CommentsProps) {
 	const handleScore = (isIncrease: boolean) => {
 		const updatedComment = {
 			...comment,
-			score: isIncrease ? comment.score++ : comment.score--,
+			score: isIncrease ? ++comment.score : --comment.score,
 		};
 		updateCommentsAfterAction(updatedComment);
 	};
@@ -90,7 +88,7 @@ export default function Comment({ comment }: CommentsProps) {
 		<>
 			{isEdit ? (
 				<ActiveComment
-					currentUser={me}
+					currentUser={currentUser}
 					buttonName={'UPDATE'}
 					onClickAction={handleUpdateComment}
 					text={comment.content}
@@ -115,6 +113,7 @@ export default function Comment({ comment }: CommentsProps) {
 					<div className="mt-2 flex flex-col items-end">
 						{replies.map((reply, index) => (
 							<Reply
+								currentUser={currentUser}
 								reply={reply}
 								updateReplyAfterAction={handleUpdateReplyAfterAction}
 								onDeleteReply={handleDeleteMyReply}
@@ -126,7 +125,10 @@ export default function Comment({ comment }: CommentsProps) {
 				</div>
 			)}
 			{isAddReply && (
-				<AddReply currentUser={me} onAddReplyToComment={handleAddReplie} />
+				<AddReply
+					currentUser={currentUser}
+					onAddReplyToComment={handleAddReplie}
+				/>
 			)}
 		</>
 	);

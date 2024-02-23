@@ -2,21 +2,22 @@ import { useState } from 'react';
 import { ReplyType } from '../../dto/comment';
 import CreatedComment from '../createdComment/CreatedComment';
 import ActiveComment from '../activeComment/ActiveComment';
-import data from '../../data.json';
+import { User } from '../../dto/user';
 
 type ReplyProps = {
 	reply: ReplyType;
+	currentUser: User;
 	updateReplyAfterAction: (reply: ReplyType) => void;
 	onDeleteReply: (reply: ReplyType) => void;
 	onUpdateMyReply: (reply: ReplyType, newContent: string) => void;
 };
 export default function Reply({
 	reply,
+	currentUser,
 	updateReplyAfterAction,
 	onDeleteReply,
 	onUpdateMyReply,
 }: ReplyProps) {
-	const me = data.currentUser;
 	const [isEdit, setIsEdit] = useState<boolean>(false);
 	const { score, content, user, createdAt, replyingTo } = reply;
 	const createdAtData =
@@ -46,7 +47,7 @@ export default function Reply({
 			{isEdit ? (
 				<ActiveComment
 					buttonName="UPDATE"
-					currentUser={me}
+					currentUser={currentUser}
 					onClickAction={updateReply}
 					text={content}
 				/>

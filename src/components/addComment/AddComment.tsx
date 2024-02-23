@@ -2,12 +2,10 @@ import { User } from '../../dto/user';
 import { CommentType } from '../../dto/comment';
 import { v4 as uuidv4 } from 'uuid';
 import ActiveComment from '../activeComment/ActiveComment';
+import data from '../../data.json';
 
-type AddCommentProps = {
-	currentUser: User;
-};
-
-export default function AddComment({ currentUser }: AddCommentProps) {
+export default function AddComment() {
+	const currentUser = data.currentUser as User;
 	const handleSentMessage = (comment: string) => {
 		const allComments = localStorage.getItem('comments');
 		const comments: CommentType[] = allComments
