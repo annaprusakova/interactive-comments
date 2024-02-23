@@ -27,7 +27,7 @@ export default function Comment({ comment }: CommentsProps) {
 	const [isAddReply, setIsAddReply] = useState<boolean>(false);
 	const [isEdit, setIsEdit] = useState<boolean>(false);
 
-	const handleAddReplie = (reply: string) => {
+	const handleAddReplyDirectToComment = (reply: string) => {
 		const newReplies = [...comment.replies];
 		newReplies.push({
 			id: uuidv4(),
@@ -39,6 +39,19 @@ export default function Comment({ comment }: CommentsProps) {
 		});
 		updateCommentsAfterAction({ ...comment, replies: newReplies });
 		setIsAddReply(false);
+	};
+
+	const handleAddReplieToReply = (replyContnent: string, reply: ReplyType) => {
+		const newReplies = [...comment.replies];
+		newReplies.push({
+			id: uuidv4(),
+			content: replyContnent,
+			createdAt: new Date().getTime(),
+			score: 0,
+			user: currentUser,
+			replyingTo: reply.user.username,
+		});
+		updateCommentsAfterAction({ ...comment, replies: newReplies });
 	};
 
 	const handleScore = (isIncrease: boolean) => {
@@ -118,6 +131,7 @@ export default function Comment({ comment }: CommentsProps) {
 								updateReplyAfterAction={handleUpdateReplyAfterAction}
 								onDeleteReply={handleDeleteMyReply}
 								onUpdateMyReply={handleUpdateMyReply}
+								onAddReplieToReply={handleAddReplieToReply}
 								key={index}
 							/>
 						))}
@@ -127,7 +141,7 @@ export default function Comment({ comment }: CommentsProps) {
 			{isAddReply && (
 				<AddReply
 					currentUser={currentUser}
-					onAddReplyToComment={handleAddReplie}
+					onAddReplyToComment={handleAddReplyDirectToComment}
 				/>
 			)}
 		</>
