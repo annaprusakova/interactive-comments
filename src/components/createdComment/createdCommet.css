@@ -1,0 +1,11 @@
+.hover-text-color-edit:hover,
+.hover-text-color-edit:hover svg {
+	color: #c5c6ef;
+	fill: #c5c6ef;
+}
+
+.hover-text-color-delete:hover,
+.hover-text-color-delete:hover svg {
+	color: #ffb8bb;
+	fill: #ffb8bb;
+}

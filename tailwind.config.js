@@ -15,6 +15,7 @@ export default {
 				'dark-blue': '#334253',
 				'grayish-blue': '#67727E',
 				'soft-red': '#ED6368',
+				'pale-red': '#FFB8BB',
 			},
 		},
 	},

@@ -2,6 +2,12 @@ import moment from 'moment';
 import data from '../../data.json';
 import { useState } from 'react';
 import { DeleteModal } from '../deleteModal/DeleteModal';
+import Delete from '../../../public/icon-delete.svg?react';
+import Edit from '../../../public/icon-edit.svg?react';
+import Reply from '../../../public/icon-reply.svg?react';
+import Plus from '../../../public/icon-plus.svg?react';
+import Minus from '../../../public/icon-minus.svg?react';
+import './createdCommet.css';
 
 type CreatedCommentProps = {
 	isReply: boolean;
@@ -38,17 +44,13 @@ export default function CreatedComment({
 				className={`${isReply ? 'w-[642px]' : 'w-[730px]'} h-full p-8 rounded-md mb-5 bg-white text-black flex flex-row items-start`}
 			>
 				<div className="w-[40px] h-[100px] p-2 flex flex-col justify-between items-center rounded-lg bg-very-light-gray">
-					<img
-						src={'/icon-plus.svg'}
-						alt="plus"
+					<Plus
 						className="w-3 cursor-pointer hover:fill-moderate-blue"
 						onClick={() => onScore(true)}
 					/>
 					<span className="text-moderate-blue font-bold">{score}</span>
-					<img
-						src={'/icon-minus.svg'}
-						alt="minus"
-						className="w-3 cursor-pointer"
+					<Minus
+						className="w-3 cursor-pointer hover:fill-moderate-blue"
 						onClick={() => onScore(false)}
 					/>
 				</div>
@@ -71,26 +73,26 @@ export default function CreatedComment({
 						{username === me.username ? (
 							<div className="w-fit flex flex-row justify-end">
 								<span
-									className="w-[82px] flex items-center justify-end text-soft-red font-bold cursor-pointer"
+									className="w-[82px] flex items-center justify-end text-soft-red font-bold cursor-pointer hover-text-color-delete"
 									onClick={() => setIsDeleteComment(true)}
 								>
-									<img src={'/icon-delete.svg'} className="w-3.5 h-3 mr-1" />
+									<Delete className="mr-1" />
 									Delete
 								</span>
 								<span
-									className="w-[82px] flex items-center justify-end text-moderate-blue font-bold cursor-pointer"
+									className="w-[82px] flex items-center justify-end text-moderate-blue font-bold cursor-pointer hover-text-color-edit"
 									onClick={() => setIsEdit(true)}
 								>
-									<img src={'/icon-edit.svg'} className="w-3.5 h-3 mr-1" />
+									<Edit className="mr-1" />
 									Edit
 								</span>
 							</div>
 						) : (
 							<span
-								className="w-16 flex flex-row items-center text-moderate-blue font-bold cursor-pointer hover:text-light-grayish-blue"
+								className="w-16 flex flex-row items-center text-moderate-blue font-bold cursor-pointer hover-text-color-edit"
 								onClick={onReply}
 							>
-								<img src={'/icon-reply.svg'} className="w-3.5 h-3 mr-1" />
+								<Reply className="mr-1" />
 								Reply
 							</span>
 						)}
