@@ -38,23 +38,54 @@ export default function CreatedComment({
 	const me = data.currentUser;
 	const [isDeleteComment, setIsDeleteComment] = useState<boolean>(false);
 
+	const commentActions = (
+		<div className="md:relative absolute md:bottom-0 bottom-7 md:right-0 right-5">
+			{username === me.username ? (
+				<div className="w-fit flex flex-row justify-end">
+					<span
+						className="w-[82px] flex items-center justify-end text-soft-red font-bold cursor-pointer hover-text-color-delete"
+						onClick={() => setIsDeleteComment(true)}
+					>
+						<Delete className="mr-1" />
+						Delete
+					</span>
+					<span
+						className="w-[82px] flex items-center justify-end text-moderate-blue font-bold cursor-pointer hover-text-color-edit"
+						onClick={() => setIsEdit(true)}
+					>
+						<Edit className="mr-1" />
+						Edit
+					</span>
+				</div>
+			) : (
+				<span
+					className="w-16 flex flex-row items-center text-moderate-blue font-bold cursor-pointer hover-text-color-edit"
+					onClick={onReply}
+				>
+					<Reply className="mr-1" />
+					Reply
+				</span>
+			)}
+		</div>
+	);
+
 	return (
 		<>
 			<div
-				className={`${isReply ? 'w-[642px]' : 'w-[730px]'} h-full p-8 rounded-md mb-5 bg-white text-black flex flex-row items-start`}
+				className={`${isReply ? 'md:w-[642px] w-[325px]' : 'md:w-[730px] w-[343px]'} relative h-full md:p-8  p-5 rounded-md mb-5 bg-white text-black flex md:flex-row flex-col-reverse  items-start`}
 			>
-				<div className="w-[40px] h-[100px] p-2 flex flex-col justify-between items-center rounded-lg bg-very-light-gray">
+				<div className="md:w-[40px] md:h-[100px] w-[100px] h-[40px] p-2 md:mt-0 mt-4 flex md:flex-col flex-row justify-between items-center rounded-lg bg-very-light-gray">
 					<Plus
 						className="w-3 cursor-pointer hover:fill-moderate-blue"
 						onClick={() => onScore(true)}
 					/>
 					<span className="text-moderate-blue font-bold">{score}</span>
 					<Minus
-						className="w-3 cursor-pointer hover:fill-moderate-blue"
+						className="w-3 cursor-pointer hover:fill-moderate-blue md:mt-0 mt-2"
 						onClick={() => onScore(false)}
 					/>
 				</div>
-				<div className="w-full h-full flex flex-col ml-7 justify-start">
+				<div className="w-full h-full flex flex-col md:ml-7 justify-start">
 					<div className="w-full flex flex-row items-center justify-between">
 						<div className="flex flex-row items-center gap-2.5">
 							<img src={avatar} className="w-8 h-8 rounded-full" />
@@ -70,32 +101,7 @@ export default function CreatedComment({
 								{moment(createdAtData).fromNow()}
 							</span>
 						</div>
-						{username === me.username ? (
-							<div className="w-fit flex flex-row justify-end">
-								<span
-									className="w-[82px] flex items-center justify-end text-soft-red font-bold cursor-pointer hover-text-color-delete"
-									onClick={() => setIsDeleteComment(true)}
-								>
-									<Delete className="mr-1" />
-									Delete
-								</span>
-								<span
-									className="w-[82px] flex items-center justify-end text-moderate-blue font-bold cursor-pointer hover-text-color-edit"
-									onClick={() => setIsEdit(true)}
-								>
-									<Edit className="mr-1" />
-									Edit
-								</span>
-							</div>
-						) : (
-							<span
-								className="w-16 flex flex-row items-center text-moderate-blue font-bold cursor-pointer hover-text-color-edit"
-								onClick={onReply}
-							>
-								<Reply className="mr-1" />
-								Reply
-							</span>
-						)}
+						{commentActions}
 					</div>
 					<div className="mt-5 text-grayish-blue">
 						{replyingTo ? (

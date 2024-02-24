@@ -5,7 +5,7 @@ import { CommentProvider } from '../Comments.provider';
 export default function CommentsSection() {
 	return (
 		<CommentProvider>
-			<div className="w-[730px]">
+			<div className="md:w-[730px] w-[375px]">
 				<CommentsList />
 				<AddComment />
 			</div>

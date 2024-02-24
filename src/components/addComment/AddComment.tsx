@@ -23,7 +23,7 @@ export default function AddComment() {
 	};
 
 	return (
-		<div className="mb-8">
+		<div className="mb-8 flex justify-center">
 			<ActiveComment
 				currentUser={currentUser}
 				buttonName="SEND"

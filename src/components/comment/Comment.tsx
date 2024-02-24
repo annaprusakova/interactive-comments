@@ -120,9 +120,15 @@ export default function Comment({ comment }: CommentsProps) {
 					setIsEdit={setIsEdit}
 				/>
 			)}
+			{isAddReply && (
+				<AddReply
+					currentUser={currentUser}
+					onAddReplyToComment={handleAddReplyDirectToComment}
+				/>
+			)}
 			{replies.length && (
 				<div className="flex flex-row justify-between">
-					<div className="w-[2px] ml-8 my-5 bg-light-gray" />
+					<div className="w-[2px] md:ml-8 ml-0  mr-4 my-5 bg-light-gray" />
 					<div className="mt-2 flex flex-col items-end">
 						{replies.map((reply, index) => (
 							<Reply
@@ -137,12 +143,6 @@ export default function Comment({ comment }: CommentsProps) {
 						))}
 					</div>
 				</div>
-			)}
-			{isAddReply && (
-				<AddReply
-					currentUser={currentUser}
-					onAddReplyToComment={handleAddReplyDirectToComment}
-				/>
 			)}
 		</>
 	);
