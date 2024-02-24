@@ -6,6 +6,7 @@ type CommentsContextProps = {
 	comments: CommentType[];
 	currentUser: User;
 	updateCommentsAfterAction: (comment: CommentType) => void;
+	addNewComment: (newComment: CommentType) => void;
 	deleteComment: (comment: CommentType) => void;
 	updateCommentContent: (comment: CommentType, text: string) => void;
 	updateReplyAfterAction: (

@@ -51,6 +51,11 @@ export const CommentProvider: FC<Properties> = ({ children }) => {
 		}
 	};
 
+	const addNewComment = (newComment: CommentType) => {
+		const copyComments = [...comments, newComment];
+		setNewData(copyComments);
+	};
+
 	const deleteComment = (deletedComment: CommentType) => {
 		const copyComments = [...comments];
 		const indexToRemove = copyComments.findIndex(
@@ -118,6 +123,7 @@ export const CommentProvider: FC<Properties> = ({ children }) => {
 				comments,
 				currentUser,
 				updateCommentsAfterAction,
+				addNewComment,
 				deleteComment,
 				updateCommentContent,
 				updateReplyAfterAction,
